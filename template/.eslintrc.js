@@ -278,6 +278,7 @@ module.exports = {
       webpack: {
         config: './build/webpack.config.base.js',
       },
+      "eslint-import-resolver-typescript": true
     }
   },
 };

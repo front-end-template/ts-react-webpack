@@ -48,7 +48,8 @@ const css = {
           loader: [
             'style-loader',
             {
-              loader: 'css-loader',
+              loader: 'typings-for-css-modules-loader',
+              // loader: 'css-loader',
               query: Object.assign({}, css.loaderDefaults, {
                 sourceMap: true,
                 modules: mod.modules
@@ -79,7 +80,9 @@ const css = {
           loader: extractCSS.extract({
             use: [
               {
-                loader: 'css-loader',
+                // loader: 'css-loader',
+                loader: 'typings-for-css-modules-loader',
+                loader: 'typings-for-css-modules-loader',
                 query: Object.assign({}, css.loaderDefaults, {
                   sourceMap,
                   modules: mod.modules

@@ -1,25 +1,47 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "sourceMap": true,
+    "target": "es2015",
     "module": "commonjs",
-    "experimentalDecorators": true,
     "moduleResolution": "node",
-    "outDir": "lib",
-    "noImplicitAny": true,
-    "noImplicitThis": true,
+    "jsx": "react",
+    "pretty": true,
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "components/*": ["./src/components/*"],
+      "styles/*": ["./src/styles/*"],
+    },
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": false,
+    "preserveConstEnums": true,
+    "allowJs": true,
+    "sourceMap": false,
     "noImplicitReturns": true,
-    "noUnusedParameters": true,
-    "suppressImplicitAnyIndexErrors": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "noUnusedParameters": false,
+    "noUnusedLocals": true,
+    "lib": [
+      "dom", "es2015"
+    ],
     "typeRoots": [
       "node_modules/@types"
     ],
     "types": [
       "node",
       "jquery",
-      "webpack-env"
+      "webpack-env",
+      "react",
+      "react-dom",
+      "prop-types",
+      "classnames"
     ]
   },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js"
+  ],
   "exclude": [
     "node_modules"
   ],

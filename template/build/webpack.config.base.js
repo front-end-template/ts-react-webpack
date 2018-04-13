@@ -3,7 +3,7 @@ const paths = require('./paths')
 module.exports = {
   entry: {
     app: [
-      paths.appIndexTs,
+      paths.appIndexJs,
     ],
     vendor: ['react', 'react-dom'],
   },
@@ -12,13 +12,15 @@ module.exports = {
     filename: '[name].js',
   },
   resolve: {
-    extensions: ['.wasm', '.mjs', '.ts', '.js', '.jsx'],
+    extensions: ['.wasm', '.mjs', '.tsx', '.ts', '.js', '.jsx'],
     modules: [
       paths.appSrc,
       'node_modules',
     ],
     alias: {
       '@': paths.appSrc,
+      components: paths.appComponents,
+      styles: paths.appStyles,
     },
   },
   module: {
