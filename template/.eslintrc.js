@@ -22,7 +22,7 @@ var restrictedGlobals = [
   'menubar',
   'moveBy',
   'moveTo',
-  'name',
+  // 'name',
   'onblur',
   'onerror',
   'onfocus',
@@ -61,9 +61,11 @@ var restrictedGlobals = [
 ];
 module.exports = {
   root: true,
-  parser: 'babel-eslint',
+  // parser: 'babel-eslint',
+  parser: 'typescript-eslint-parser',
   extends: ['airbnb'],
-  plugins: ['import', 'flowtype', 'jsx-a11y', 'react'],
+  // plugins: ['import', 'flowtype', 'jsx-a11y', 'react'],
+  plugins: ['import', 'flowtype', 'react', 'typescript'],
   env: {
     browser: true,
     commonjs: true,
@@ -83,10 +85,13 @@ module.exports = {
   },
 
   rules: {
+    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
+    'no-console': process.env.NODE_ENV === 'production' ? 2 : 0,
+    'dot-notation': 'off',
     'arrow-parens': ['error', 'as-needed'],
     'space-before-function-paren': ['error', 'always'],
     'semi': ['error', 'never'],
-    'react/jsx-filename-extension': [1, {'extensions': ['.js', '.jsx']}],
+    'react/jsx-filename-extension': [1, {'extensions': ['.js', '.jsx', 'ts', 'tsx']}],
     // ----
     // http://eslint.org/docs/rules/
     'array-callback-return': 'warn',
@@ -246,7 +251,12 @@ module.exports = {
     'react/react-in-jsx-scope': 'error',
     'react/require-render-return': 'error',
     'react/style-prop-object': 'warn',
-
+    'react/jsx-wrap-multilines': [
+      'error',
+      {
+        'return': 'ignore'
+      },
+    ],
     // https://github.com/evcohen/eslint-plugin-jsx-a11y/tree/master/docs/rules
     'jsx-a11y/accessible-emoji': 'warn',
     'jsx-a11y/alt-text': 'warn',
@@ -267,16 +277,39 @@ module.exports = {
     'jsx-a11y/role-supports-aria-props': 'warn',
     'jsx-a11y/scope': 'warn',    "jsx-a11y/href-no-hash": "off",
     "jsx-a11y/anchor-is-valid": ["warn", { "aspects": ["invalidHref"] }],
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "jsx-a11y/no-noninteractive-element-interactions": "off",
 
     // https://github.com/gajus/eslint-plugin-flowtype
     'flowtype/define-flow-type': 'warn',
     'flowtype/require-valid-file-annotation': 'warn',
     'flowtype/use-flow-type': 'warn',
   },
+
+  overrides: {
+    files: ['**/*.ts', '**/*.tsx'],
+    parser: 'typescript-eslint-parser',
+    rules: {
+      "import/export": "off",
+      "no-restricted-globals": "off",
+      "import/extensions": "off",
+      "no-dupe-class-members": "off",
+      "no-empty-pattern": "off",
+      "no-redeclare": "off",
+      "no-undef": "off",
+      "no-unused-expressions": "off",
+      "no-use-before-define": "off",
+      "no-useless-constructor": "off",
+      "typescript/no-unused-vars": "error"
+    }
+  },
+
   settings: {
     'import/resolver': {
       webpack: {
         config: './build/webpack.config.base.js',
+        extensions: ['.js', '.jsx', '.ts', 'tsx']
       },
       "eslint-import-resolver-typescript": true
     }

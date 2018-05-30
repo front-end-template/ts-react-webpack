@@ -3,6 +3,7 @@ const paths = require('./paths')
 module.exports = {
   entry: {
     app: [
+      'babel-polyfill',
       paths.appIndexJs,
     ],
     vendor: ['react', 'react-dom'],
@@ -12,7 +13,7 @@ module.exports = {
     filename: '[name].js',
   },
   resolve: {
-    extensions: ['.wasm', '.mjs', '.tsx', '.ts', '.js', '.jsx'],
+    extensions: ['.tsx', '.ts', '.js', '.jsx'],
     modules: [
       paths.appSrc,
       'node_modules',
@@ -27,28 +28,34 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: 'tslint-loader',
+        use: 'eslint-loader',
         exclude: /node_modules/,
         enforce: 'pre',
       },
       // {
-      //   test: /\.js$/,
-      //   loader: 'source-map-loader',
-      //   include: /rxjs/,
+      //   test: /\.tsx?$/,
+      //   use: 'tslint-loader',
+      //   exclude: /node_modules/,
       //   enforce: 'pre',
       // },
+      {
+        test: /\.js$/,
+        loader: 'source-map-loader',
+        include: /rxjs/,
+        enforce: 'pre',
+      },
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
       },
-      {
-        test: /.tsx?$/,
-        loader: 'tslint-loader',
-        options: {
-          emitErrors: true,
-        },
-        enforce: 'pre',
-      },
+      // {
+      //   test: /.tsx?$/,
+      //   loader: 'tslint-loader',
+      //   options: {
+      //     emitErrors: true,
+      //   },
+      //   enforce: 'pre',
+      // },
       {
         test: /\.(js|jsx|mjs)$/,
         enforce: 'pre',
@@ -73,7 +80,7 @@ module.exports = {
               presets: [
                 ['env', {
                   targets: {
-                    browsers: ['chrome > 50', 'ios > 6', 'android > 4.4'],
+                    browsers: ['chrome > 40', 'ios > 6', 'android > 4.4'],
                   },
                   modules: false,
                 }],
@@ -82,6 +89,7 @@ module.exports = {
               ],
               plugins: [
                 'transform-decorators-legacy',
+                'react-hot-loader/babel',
               ],
               cacheDirectory: true,
             },

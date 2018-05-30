@@ -2,7 +2,7 @@
   "presets": [
     ["env", {
       "targets": {
-        "browsers": ["chrome > 50", "ios > 6", "android > 4.4"],
+        "browsers": ["chrome > 40", "ios > 6", "android > 4.4"],
       },
       "modules": false,
     }],
@@ -11,5 +11,6 @@
   ],
   "plugins": [
     "transform-decorators-legacy",
+    "react-hot-loader/babel"
   ],
 }

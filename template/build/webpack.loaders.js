@@ -82,7 +82,6 @@ const css = {
               {
                 // loader: 'css-loader',
                 loader: 'typings-for-css-modules-loader',
-                loader: 'typings-for-css-modules-loader',
                 query: Object.assign({}, css.loaderDefaults, {
                   sourceMap,
                   modules: mod.modules
