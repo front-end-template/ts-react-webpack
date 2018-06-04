@@ -65,7 +65,7 @@ module.exports = {
   parser: 'typescript-eslint-parser',
   extends: ['airbnb'],
   // plugins: ['import', 'flowtype', 'jsx-a11y', 'react'],
-  plugins: ['import', 'flowtype', 'react', 'typescript'],
+  plugins: ['typescript', 'import', 'flowtype', 'react'],
   env: {
     browser: true,
     commonjs: true,
@@ -85,8 +85,8 @@ module.exports = {
   },
 
   rules: {
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-    'no-console': process.env.NODE_ENV === 'production' ? 2 : 0,
+    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 1,
+    'no-console': process.env.NODE_ENV === 'production' ? 2 : 1,
     'dot-notation': 'off',
     'arrow-parens': ['error', 'as-needed'],
     'space-before-function-paren': ['error', 'always'],
@@ -285,6 +285,60 @@ module.exports = {
     'flowtype/define-flow-type': 'warn',
     'flowtype/require-valid-file-annotation': 'warn',
     'flowtype/use-flow-type': 'warn',
+    // 函数有重载时，必须将重载成员分组在一起
+    // @off 该规则现在有 bug https://github.com/AlloyTeam/eslint-config-alloy/issues/38
+    'typescript/adjacent-overload-signatures': 'off',
+    // 类和接口的命名必须遵守帕斯卡命名法，比如 PersianCat
+    'typescript/class-name-casing': 'error',
+    // 必须手动指定类的属性和方法的可访问性（private 或 public）
+    // @off 太严格了
+    'typescript/explicit-member-accessibility': 'off',
+    // 接口必须以 I 开头
+    // @off 没必要限制
+    'typescript/interface-name-prefix': 'off',
+    // 接口和类型字面量中每一行都必须以分号结尾
+    'typescript/member-delimiter-style': 'error',
+    // 私有变量命名必须以下划线开头
+    // @off 没必要限制
+    'typescript/menber-naming': 'off',
+    // 属性和方法必须按照排序规则排序
+    'typescript/member-ordering': 'error',
+    // 必须使用 as 进行类型断言
+    // @off 没必要限制，在 React 项目中需要限制
+    'typescript/no-angle-bracket-type-assertion': 'off',
+    // 禁止使用 Array 构造函数来初始化数组，除非指定了泛型，或传入的是单个数字
+    // 开启，可以帮助发现错误
+    'typescript/no-array-constructor': 'error',
+    // 禁止使用空接口
+    // @off 没必要限制
+    'typescript/no-empty-interface': 'off',
+    // 禁止使用 any
+    // @off 太严格了
+    'typescript/no-explicit-any': 'off',
+    // 禁止使用 namespace 和 module
+    // 用 namespace 或 module 来定义模块是以前的用法，现在已经有了 import 和 export
+    'typescript/no-namespace': 'error',
+    // 禁止在给构造函数的参数添加修饰符
+    // @off 没必要限制
+    'typescript/no-parameter-properties': 'off',
+    // 禁止使用三斜线注释
+    // @off 没必要限制
+    'typescript/no-triple-slash-reference': 'off',
+    // 限制 type 的使用
+    // @off 没必要限制
+    'typescript/no-type-alias': 'off',
+    // 定义过的变量必须使用
+    // eslint 原生的 no-unused-vars 无法使用，需要使用 typescript/no-unused-vars
+    'typescript/no-unused-vars': 'error',
+    // 变量必须先定义后使用
+    // @off eslint 原生已支持 no-use-before-define
+    'typescript/no-use-before-define': 'off',
+    // 使用 namespace 代替 module
+    // @off typescirpt/no-namespace 已经禁用了 namespace 和 module
+    'typescript/prefer-namespace-keyword': 'off',
+    // 类型定义的冒号前后是否需要空格
+    // 默认冒号前必须没有空格，冒号后必须有空格
+    'typescript/type-annotation-spacing': 'error'
   },
 
   overrides: {
@@ -300,8 +354,7 @@ module.exports = {
       "no-undef": "off",
       "no-unused-expressions": "off",
       "no-use-before-define": "off",
-      "no-useless-constructor": "off",
-      "typescript/no-unused-vars": "error"
+      "no-useless-constructor": "off"
     }
   },
 
@@ -315,3 +368,4 @@ module.exports = {
     }
   },
 };
+

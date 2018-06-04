@@ -16,6 +16,9 @@ module.exports = {
   appIndexJs: resolveApp('src/index.js'),
   appIndexTsx: resolveApp('src/index.tsx'),
   appComponents: resolveApp('src/components'),
+  appPages: resolveApp('src/pages'),
+  appServices: resolveApp('src/services'),
+  appLib: resolveApp('src/lib'),
   appPackageJson: resolveApp('package.json'),
   appSrc: resolveApp('src'),
   appStyles: resolveApp('src/styles'),
@@ -23,3 +26,4 @@ module.exports = {
   appNodeModules: resolveApp('node_modules'),
   yarnLockFile: resolveApp('yarn.lock'),
 }
+

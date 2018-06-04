@@ -6,10 +6,10 @@ import * as radius from 'styles/radius.local.scss'
 import 'styles/bg.scss'
 
 interface Props {
-  greeting: string
+  greeting: string;
 }
 interface State {
-  name: string
+  name: string;
 }
 
 class Test extends React.Component<Props, State> {
@@ -19,7 +19,7 @@ class Test extends React.Component<Props, State> {
   constructor (props) {
     super(props)
     this.state = {
-      name: 'xgs'
+      name: 'xgs',
     }
   }
   render () {

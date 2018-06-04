@@ -1,15 +1,12 @@
 const path = require('path')
 const paths = require('./paths')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-// const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const { css } = require('./webpack.loaders')
 const { Config } = require('webpack-config')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
-
-const extractCSS = new ExtractTextPlugin({
-  filename: 'static/css/style.[contenthash:8].css',
-})
 
 module.exports = new Config()
   .extend(path.resolve(paths.appBuild, 'webpack.config.base.js'))
@@ -17,10 +14,19 @@ module.exports = new Config()
     mode: 'production',
     optimization: {
       splitChunks: {
-        chunks: 'initial',
-        // minChunks: 1,
+        chunks: 'all',
+        // chunks: 'initial',
+        minChunks: 1,
         name: true,
       },
+      minimizer: [
+        new UglifyJsPlugin({
+          cache: true,
+          parallel: true,
+          sourceMap: false,
+        }),
+        new OptimizeCSSAssetsPlugin({}),
+      ],
       // concatenateModules: true,
       // namedModules: true,
       // minimize: false,
@@ -45,11 +51,14 @@ module.exports = new Config()
     },
     module: {
       rules: [
-        ...css.getExtractCSSLoaders(extractCSS),
+        ...css.getExtractCSSLoaders(),
       ],
     },
     plugins: [
-      extractCSS,
+      new MiniCssExtractPlugin({
+        filename: 'static/css/[name].[hash].css',
+        chunkFilename: 'static/css/[id].[hash].css',
+      }),
       new HtmlWebpackPlugin({
         template: path.resolve(paths.appSrc, 'index.html'),
         filename: 'index.html',
@@ -61,3 +70,4 @@ module.exports = new Config()
       }),
     ],
   })
+

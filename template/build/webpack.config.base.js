@@ -1,4 +1,5 @@
 const paths = require('./paths')
+const tsImportPluginFactory = require('ts-import-plugin')
 
 module.exports = {
   entry: {
@@ -22,22 +23,13 @@ module.exports = {
       '@': paths.appSrc,
       components: paths.appComponents,
       styles: paths.appStyles,
+      pages: paths.appPages,
+      lib: paths.appLib,
+      services: paths.appServices,
     },
   },
   module: {
     rules: [
-      {
-        test: /\.tsx?$/,
-        use: 'eslint-loader',
-        exclude: /node_modules/,
-        enforce: 'pre',
-      },
-      // {
-      //   test: /\.tsx?$/,
-      //   use: 'tslint-loader',
-      //   exclude: /node_modules/,
-      //   enforce: 'pre',
-      // },
       {
         test: /\.js$/,
         loader: 'source-map-loader',
@@ -45,17 +37,29 @@ module.exports = {
         enforce: 'pre',
       },
       {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
+        test: /\.(js|jsx|mjs|ts|tsx)$/,
+        enforce: 'pre',
+        loader: 'eslint-loader',
+        include: paths.appSrc,
       },
-      // {
-      //   test: /.tsx?$/,
-      //   loader: 'tslint-loader',
-      //   options: {
-      //     emitErrors: true,
-      //   },
-      //   enforce: 'pre',
-      // },
+      {
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        options: {
+          transpileOnly: false,
+          getCustomTransformers: () => ({
+            before: [tsImportPluginFactory({
+              libraryName: 'antd',
+              libraryDirectory: 'lib',
+              style: true,
+            })],
+          }),
+          compilerOptions: {
+            module: 'ESNext',
+          },
+        },
+        exclude: /node_modules/,
+      },
       {
         test: /\.(js|jsx|mjs)$/,
         enforce: 'pre',
@@ -90,6 +94,7 @@ module.exports = {
               plugins: [
                 'transform-decorators-legacy',
                 'react-hot-loader/babel',
+                'syntax-dynamic-import',
               ],
               cacheDirectory: true,
             },
@@ -113,3 +118,4 @@ module.exports = {
     ],
   },
 }
+
