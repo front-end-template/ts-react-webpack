@@ -1,5 +1,6 @@
 /* eslint global-require: 0 */
 /* eslint-disable comma-dangle */
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const css = {
   loaders: [
@@ -13,7 +14,12 @@ const css = {
     },
     {
       ext: 'less',
-      use: ['less-loader'],
+      use: [{
+        loader: 'less-loader',
+        options: {
+          javascriptEnabled: true
+        }
+      }],
     },
     {
       ext: 'styl',
@@ -40,7 +46,7 @@ const css = {
     ]
   },
 
-  getDevLoaders () {
+  getDevLoaders (sourceMap = true) {
     return css.loaders.reduce((result, loader) => {
       css.getModuleRegExp(loader.ext).forEach(mod => {
         result.push({
@@ -51,14 +57,14 @@ const css = {
               loader: 'typings-for-css-modules-loader',
               // loader: 'css-loader',
               query: Object.assign({}, css.loaderDefaults, {
-                sourceMap: true,
+                sourceMap,
                 modules: mod.modules
               }),
             },
             {
               loader: 'postcss-loader',
               options: {
-                sourceMap: true,
+                sourceMap,
                 plugins: () => ([
                   require('autoprefixer'),
                   require('precss'),
@@ -72,35 +78,33 @@ const css = {
       return result
     }, [])
   },
-  getExtractCSSLoaders (extractCSS, sourceMap = false) {
+  getExtractCSSLoaders (sourceMap = false) {
     return css.loaders.reduce((result, loader) => {
       css.getModuleRegExp(loader.ext).forEach(mod => {
         result.push({
           test: new RegExp(mod.regex),
-          loader: extractCSS.extract({
-            use: [
-              {
-                // loader: 'css-loader',
-                loader: 'typings-for-css-modules-loader',
-                query: Object.assign({}, css.loaderDefaults, {
-                  sourceMap,
-                  modules: mod.modules
-                }),
+          use: [
+            MiniCssExtractPlugin.loader,
+            {
+              // loader: 'css-loader',
+              loader: 'typings-for-css-modules-loader',
+              query: Object.assign({}, css.loaderDefaults, {
+                sourceMap,
+                modules: mod.modules
+              }),
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                sourceMap,
+                plugins: () => ([
+                  require('autoprefixer'),
+                  require('precss'),
+                ]),
               },
-              {
-                loader: 'postcss-loader',
-                options: {
-                  sourceMap,
-                  plugins: () => ([
-                    require('autoprefixer'),
-                    require('precss'),
-                  ]),
-                },
-              },
-              ...loader.use,
-            ],
-            fallback: 'style-loader',
-          }),
+            },
+            ...loader.use,
+          ],
         })
       })
       return result
